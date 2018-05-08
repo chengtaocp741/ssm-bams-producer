@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.TreeMapper" >
+  <resultMap id="BaseResultMap" type="com.jk.model.Tree" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, text, pid, url
+  </sql>
+  
+    <select id="selectTreeList" resultMap="BaseResultMap"  parameterType="com.jk.model.Tree">
+       select * from t_tree 
+    </select>
+  
+  <select id="selectTreeById" parameterType="String" resultType="com.jk.model.Tree">
+    select * from t_tree where id = #{id}
+  
+  </select>
+  
+    <select id="queryRoleTree" resultMap="BaseResultMap"  parameterType="String">
+       select * from role_tree rt,t_tree tt where rt.treeId = tt.id and rt.roleId=#{roleId}
+    </select>
+  
+  <insert id="addTree" parameterType="com.jk.model.Tree">
+  
+ insert into t_tree (text, pid, url)
+    values (#{text}, #{pid}, #{url} )
+  </insert>
+  
+  
+   <select id="getRoleTreeList" resultType="java.util.LinkedHashMap"  parameterType="com.jk.model.User">
+       select tt.* from user_role ur,role_tree rt ,t_tree tt where ur.roleId=rt.roleId and rt.treeId =tt.id
+       and ur.userId = #{id}
+    </select>
+  
+  <insert id="addRoleTree" parameterType="com.jk.model.Tree">
+  
+ insert into role_tree (roleId, treeId)
+    values (#{text} ,#{id})
+  </insert>
+  
+  <delete id="deleteTreeById" parameterType="String">
+  delete from t_tree where id = #{id}
+  
+  </delete>
+  
+   <delete id="deleteroletree" parameterType="String">
+  delete from role_tree where roleId = #{roleId}
+  
+  </delete>
+</mapper>
